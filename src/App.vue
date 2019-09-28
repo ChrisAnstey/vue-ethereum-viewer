@@ -1,18 +1,24 @@
 <template>
   <div id="app">
     <img id='logo' alt="Vue logo" src="./assets/ethereum.svg">
-    <EthereumView msg="Ethereum Viewer"/>
+    <p>
+      <!-- use router-link component for navigation. -->
+      <!-- specify the link by passing the `to` prop. -->
+      <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
+      <router-link to="/latest_block">View Latest Block</router-link>
+      |
+      <router-link to="/info">Show info</router-link>
+    </p>
+    <!-- route outlet -->
+    <!-- component matched by the route will render here -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import EthereumView from './components/EthereumView.vue'
 
 export default {
   name: 'app',
-  components: {
-    EthereumView
-  }
 }
 </script>
 
