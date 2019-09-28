@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img id='logo' alt="Vue logo" src="./assets/ethereum.svg">
+    <EthereumView msg="Ethereum Viewer"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import EthereumView from './components/EthereumView.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    EthereumView
   }
 }
 </script>
@@ -24,5 +24,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+#app img#logo {
+  width:300px;
 }
 </style>
