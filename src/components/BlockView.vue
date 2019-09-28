@@ -1,19 +1,11 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <div>Block: {{ $route.params.id }} </div>
+    <div>Hex: {{ parseInt($route.params.id).toString(16) }} </div>
     <div>
-      Latest Block:
-      <router-link :to="{ name: 'block', params: { id: latest_block }}">
-        {{ latest_block }}
-      </router-link>
+        Date: {{block.friendly_date}}
     </div>
-    <ul v-if="blocks && blocks.length">
-      <li v-for="block of blocks" v-bind:key="block">
-        <p><strong>{{block.title}}</strong></p>
-        <p>{{block.body}}</p>
-      </li>
-    </ul>
-
     <ul v-if="errors && errors.length">
       <li v-for="error of errors" v-bind:key="error">
         {{error.message}}
@@ -26,30 +18,32 @@
 import axios from 'axios';
 
 export default {
-  name: 'EthereumView',
+  name: 'BlockView',
   props: {
     msg: String
   },
   data() {
     return {
-      latest_block: '',
-      blocks: [],
+      block: '',
       errors: [],
-      infura_url: ''
+      infura_url: '',
+      params: []
     }
   },
-  created() {
-    let params = {
+  mounted() {
+    this.msg = "Viewing " + this.$route.params.id
+    this.params = {
       "jsonrpc": "2.0",
       "id": 1,
-      "method": "eth_blockNumber",
-      "params": []
+      "method": "eth_getBlockByNumber",
+      "params": ['0x' + parseInt(this.$route.params.id).toString(16), false]
     }
     this.infura_url = `https://mainnet.infura.io/v3/` + process.env.VUE_APP_INFURA_KEY
-    axios.post(this.infura_url, params)
+    axios.post(this.infura_url, this.params)
     .then(response => {
-      this.blocks = response.data
-      this.latest_block = parseInt(response.data.result, 16)
+      this.block = response.data.result
+      let block_date = new Date(parseInt(this.block.timestamp, 16) * 1000)
+      this.block.friendly_date = block_date.toUTCString()
     })
     .catch(e => {
       this.errors.push(e)
