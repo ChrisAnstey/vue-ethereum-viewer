@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import BlockService from '../common/blockService';
 
 export default {
   name: 'BlockView',
@@ -25,21 +25,12 @@ export default {
   data() {
     return {
       block: '',
-      errors: [],
-      infura_url: '',
-      params: []
+      errors: []
     }
   },
   mounted() {
     this.msg = "Viewing " + this.$route.params.id
-    this.params = {
-      "jsonrpc": "2.0",
-      "id": 1,
-      "method": "eth_getBlockByNumber",
-      "params": ['0x' + parseInt(this.$route.params.id).toString(16), false]
-    }
-    this.infura_url = `https://mainnet.infura.io/v3/` + process.env.VUE_APP_INFURA_KEY
-    axios.post(this.infura_url, this.params)
+    BlockService.get(this.$route.params.id)
     .then(response => {
       this.block = response.data.result
       let block_date = new Date(parseInt(this.block.timestamp, 16) * 1000)
