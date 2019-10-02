@@ -4,11 +4,14 @@
     <div>Block: {{ $route.params.id }} </div>
     <div>Hex: {{ parseInt($route.params.id).toString(16) }} </div>
     <div>
-        Date: {{block.friendly_date}}
+      Date: {{ block.friendly_date }}
     </div>
     <ul v-if="errors && errors.length">
-      <li v-for="error of errors" v-bind:key="error">
-        {{error.message}}
+      <li
+        v-for="error of errors"
+        :key="error"
+      >
+        {{ error.message }}
       </li>
     </ul>
   </div>
@@ -20,7 +23,10 @@ import BlockService from '../common/blockService';
 export default {
   name: 'BlockView',
   props: {
-    msg: String
+    msg: {
+      type: String,
+      default: ""
+    }
   },
   data() {
     return {
